@@ -1,5 +1,7 @@
 # Minesweeper
 
+**[▶ Play it](https://davidcoray19-dev.github.io/minesweeper/)**
+
 Classic Minesweeper in a single HTML file. No build step, no dependencies, no backend —
 open `index.html` and play.
 
@@ -40,7 +42,8 @@ python3 -m http.server 8000
 ```
 
 To deploy, copy the files to any static host — a GitHub Pages branch, an nginx root, an
-S3 bucket. All paths are relative, so serving from a subdirectory works too.
+S3 bucket. All paths are relative, so serving from a subdirectory works too; the copy
+linked at the top of this file is served by GitHub Pages straight from `main`.
 
 ## Files
 
