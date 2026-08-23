@@ -7,6 +7,8 @@ The board sizes itself to fill your screen instead of offering fixed difficulty 
 it fits as many 24px cells as the viewport allows and mines 20% of them. A phone gets a
 tall narrow grid, a desktop a wide one.
 
+![A wide Minesweeper board filling a desktop window: grey bevelled cells, red LCD counters for mines and time, a smiley button, and an opened area of coloured numbers and red flags](docs/screenshot.png)
+
 ## Features
 
 - **Auto-sizing board** — fills the viewport, recalculated on resize (only while the current game is untouched)
