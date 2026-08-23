@@ -4,11 +4,15 @@ const CACHE = 'minesweeper-v2';
 const ASSETS = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE)
-      .then(cache => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting())
-  );
+  e.waitUntil(caches.open(CACHE).then(async cache => {
+    // Precache each file on its own rather than with addAll(): that one is
+    // all-or-nothing, so a single unavailable file — a 404, or a 401 where the
+    // deployment sits behind auth — would fail the whole install and silently
+    // leave the previous worker in place. Whatever is missed here gets cached
+    // by the fetch handler the first time it is actually used.
+    await Promise.all(ASSETS.map(url => cache.add(url).catch(() => {})));
+    await self.skipWaiting();
+  }));
 });
 
 self.addEventListener('activate', e => {
