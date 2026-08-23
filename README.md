@@ -14,6 +14,7 @@ tall narrow grid, a desktop a wide one.
 - **Chording** — middle-click or both buttons on a revealed number to open its neighbours once enough flags are set
 - **Touch support** — a 🚩 toggle appears on touch devices to switch between revealing and flagging
 - **Resume after reload** — the game in progress is kept in `localStorage`
+- **Works offline** — the service worker caches the app shell, so it keeps running with no connection
 - **Installable** — ships a web app manifest, so it can be added to a home screen
 - **Windows 95 look** — the bevels are plain CSS borders, the digit colours are the original palette
 
@@ -49,8 +50,10 @@ icon-192.png    app icon, small
 icon-512.png    app icon, large
 ```
 
-The service worker is a pass-through: it is registered so the app qualifies as
-installable, but it does not cache anything, so there is no offline play.
+The service worker precaches those files on install and then serves them
+stale-while-revalidate: a load is answered from the cache and the entry is
+refreshed in the background, so the game starts instantly and works offline,
+and a new deployment is picked up on the load after next.
 
 ## License
 

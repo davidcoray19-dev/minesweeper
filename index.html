@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -177,7 +177,7 @@ html, body {
     <button id="smiley">🙂</button>
     <div id="right-group">
       <div id="timer" class="lcd">000</div>
-      <button id="flag-toggle" title="Flaggen-Modus (Touch)">🚩</button>
+      <button id="flag-toggle" title="Flag mode (touch)">🚩</button>
     </div>
   </div>
   <div id="board-wrap">
@@ -455,7 +455,7 @@ function loadState() {
   }
 }
 
-// Maus-/Touch-Interaktion
+// Mouse / touch interaction
 boardEl.addEventListener('pointerdown', e => {
   lastPointerType = e.pointerType;
 });

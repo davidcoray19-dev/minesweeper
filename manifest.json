@@ -1,7 +1,7 @@
 {
   "name": "Minesweeper",
   "short_name": "Mines",
-  "description": "Klassisches Minesweeper, an die Bildschirmgrösse angepasst",
+  "description": "Classic Minesweeper, fitted to the size of your screen",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#c0c0c0",
