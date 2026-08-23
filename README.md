@@ -45,7 +45,8 @@ S3 bucket. All paths are relative, so serving from a subdirectory works too.
 index.html      the whole game — markup, styles and logic
 manifest.json   web app manifest
 sw.js           service worker
-icon*.png       app icons (192px and 512px)
+icon-192.png    app icon, small
+icon-512.png    app icon, large
 ```
 
 The service worker is a pass-through: it is registered so the app qualifies as
