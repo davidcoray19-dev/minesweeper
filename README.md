@@ -55,10 +55,12 @@ icon-192.png    app icon, small
 icon-512.png    app icon, large
 ```
 
-The service worker precaches those files on install and then serves them
-stale-while-revalidate: a load is answered from the cache and the entry is
-refreshed in the background, so the game starts instantly and works offline,
-and a new deployment is picked up on the load after next.
+The service worker precaches those files on install. Page loads go to the
+network first and fall back to the cached shell only when the network is
+unreachable, so HTTP auth in front of a deployment still applies: a 401 is shown
+as is and clears the cache. Everything else is served stale-while-revalidate —
+answered from the cache and refreshed in the background — so the game works
+offline and a new deployment is picked up on the next load.
 
 ## License
 

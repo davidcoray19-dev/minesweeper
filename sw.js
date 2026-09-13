@@ -1,4 +1,4 @@
-const CACHE = 'minesweeper-v2';
+const CACHE = 'minesweeper-v3';
 
 // Everything the game needs to run with no network at all.
 const ASSETS = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png'];
@@ -23,15 +23,32 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Stale-while-revalidate: answer from the cache so the game starts instantly and
-// works offline, but refresh the entry in the background so the next load picks
-// up a new deployment. Bumping CACHE above is only needed to force-drop old files.
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   if (new URL(req.url).origin !== self.location.origin) return;
 
   e.respondWith(caches.open(CACHE).then(async cache => {
+    // Page loads go to the network first. Answering them from the cache would
+    // bypass HTTP auth in front of the deployment: dismissing the login dialog
+    // would still show the cached game. On a 401, show it and drop the cache;
+    // fall back to the cached shell only when the network is unreachable.
+    if (req.mode === 'navigate') {
+      let res;
+      try {
+        res = await fetch(req);
+      } catch (err) {
+        const shell = await cache.match(req) || await cache.match('index.html');
+        if (shell) return shell;
+        throw err;
+      }
+      if (res.status === 401) await caches.delete(CACHE);
+      else if (res.ok) cache.put(req, res.clone());
+      return res;
+    }
+
+    // Everything else: stale-while-revalidate. Answer from the cache and refresh
+    // the entry in the background so the next load picks up a new deployment.
     const cached = await cache.match(req);
 
     const network = fetch(req).then(res => {
@@ -44,14 +61,6 @@ self.addEventListener('fetch', e => {
       return cached;
     }
 
-    // Not cached yet: go to the network, and if that fails on a page load,
-    // fall back to the app shell rather than showing the browser error page.
-    return network.catch(async err => {
-      if (req.mode === 'navigate') {
-        const shell = await cache.match('index.html');
-        if (shell) return shell;
-      }
-      throw err;
-    });
+    return network;
   }));
 });
